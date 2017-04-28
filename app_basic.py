@@ -37,7 +37,9 @@ def index():
 			string = "NULL";
 			print ("Insert into USERS VALUES(%s,%s)" % (text,string))
                         cur.execute("Insert into USERS VALUES(%s,%s)" % (text,string))
-                con.commit()
+                        con.commit()
+                else:
+                        return redirect(url_for('index1',Uid = text))
 		print "test"
                 cur.execute("Select * from USERS")
                 ver = cur.fetchall()
@@ -50,11 +52,19 @@ def index():
         finally:
                 if con:
                         con.close()
-	return redirect(url_for('index1',Uid = text))
+	return redirect(url_for('newuser',Uid = text))
 
 
 @app.route("/index1/<Uid>")
 def index1(Uid):
+	return render_template("home.html",Uid=Uid)
+
+@app.route("/<Uid>/edit")
+def edit(Uid):
+	return render_template("upload.html",Uid=Uid)
+
+@app.route("/<Uid>/newuser")
+def newuser(Uid):
 	return render_template("upload.html",Uid=Uid)
 
 @app.route("/index1/<Uid>/upload", methods=['POST'])
